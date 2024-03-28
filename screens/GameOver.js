@@ -18,7 +18,7 @@ const GameOver = ({ victoryNum, numberOfTry, newGame }) => {
             source={require("../assets/images/success.png")}
           />
           <GameText style={styles.message}>
-            numero di tentativi: {numberOfTry}
+            numero di tentativi:{numberOfTry}
           </GameText>
           <PrimaryButton onPress={newGame}>ricomincia</PrimaryButton>
         </View>
@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   image: {
-    width: 400,
-    height: 400,
+    width: 300,
+    height: 300,
     borderRadius: 200,
     marginBottom: 10,
     borderWidth: 5,
@@ -55,6 +55,6 @@ const styles = StyleSheet.create({
   },
   message: {
     color: Colors.primary500,
-    fontSize: 28,
+    fontSize: 25,
   },
 });
