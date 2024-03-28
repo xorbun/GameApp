@@ -6,7 +6,10 @@ import PrimaryButton from "../components/PrimaryButton";
 import GameText from "../components/Text";
 import { AntDesign } from '@expo/vector-icons';
 import Card from "../components/Card";
+
+
 const GameScreens = ({ chosenNumber, onGameOver }) => {
+  const [buttonSmash,setButtonSmash]=useState(0);
   function generateRandomBetween(min, max, exclude) {
     const rndNum = Math.floor(Math.random() * (max - min)) + min;
 
@@ -46,12 +49,13 @@ const GameScreens = ({ chosenNumber, onGameOver }) => {
       currentGuess
     );
     setCurrentGuess(newRndmNum);
+    setButtonSmash(buttonSmash+1)
   };
   useEffect(() => {
     
     if (currentGuess === chosenNumber) {
        
-        onGameOver();
+        onGameOver(buttonSmash);
     }
   }, [currentGuess, chosenNumber, onGameOver]);
 

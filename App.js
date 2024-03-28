@@ -7,8 +7,11 @@ import Colors from "./constants/colors";
 import GameOVer from "./screens/GameOver";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
+
+
 export default function App() {
   const [useNumber, setUseNumber] = useState();
+  const [numberofTry,setNumberOfTry]=useState();
   const [gameIsOver, setGameIsOVer] = useState(false);
 
   const [fontsLoaded] = useFonts({
@@ -24,11 +27,12 @@ export default function App() {
   };
 
   let screen;
-  const gameOverHandler = () => {
+  const gameOverHandler = (numberOfTry) => {
+    setNumberOfTry(numberOfTry)
     setGameIsOVer(true);
   };
   if (gameIsOver) {
-    screen = <GameOVer victoryNum={useNumber} />;
+    screen = <GameOVer victoryNum={useNumber} numberOfTry={numberofTry}/>;
   } else if (useNumber) {
     screen = (
       <GameScreens chosenNumber={useNumber} onGameOver={gameOverHandler} />

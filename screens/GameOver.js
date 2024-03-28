@@ -3,14 +3,16 @@ import PrimaryButton from "../components/PrimaryButton";
 import { StyleSheet } from "react-native";
 import Colors from "../constants/colors";
 import { View,Image } from "react-native";
+import GameText from "../components/Text";
 
-const GameOver = ({ victoryNum }) => {
+const GameOver = ({ victoryNum,numberOfTry }) => {
  
   return (
     
     <View style={styles.container}>
       <View style={styles.titleContainer}>
       <Title>il numero vincente {victoryNum}</Title>
+      <GameText>{numberOfTry}</GameText>
      </View>
       <View style={styles.imageContainer}>
       <View>
