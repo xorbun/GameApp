@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: Colors.accent200,
     padding: 12,
-    width:80,
+    width: 330,
     borderRadius: 8,
     margin: 24,
     alignItems: "center",
@@ -23,6 +23,6 @@ const styles = StyleSheet.create({
   Text: {
     color: Colors.accent200,
     fontSize: 36,
-    fontWeight:'bold'
+    fontWeight: "bold",
   },
 });

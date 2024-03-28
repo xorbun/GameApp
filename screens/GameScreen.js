@@ -64,10 +64,9 @@ const GameScreens = ({ chosenNumber, onGameOver }) => {
   return (
     <View style={styles.container}>
       <Title>Provo a indovinare...</Title>
+      <GameText>Il numero scelto è</GameText>
+      <NumberContainer>{currentGuess}</NumberContainer>
       <Card>
-        <GameText>Il numero scelto è</GameText>
-        <NumberContainer>{currentGuess}</NumberContainer>
-
         <View style={styles.buttonsContainer}>
           <View style={styles.buttonContainer}>
             <PrimaryButton onPress={nextGuessedNumber.bind(this, "lower")}>
@@ -106,6 +105,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
+    alignItems: "center",
   },
 
   prevNumberContainer: {
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     backgroundColor: Colors.accent200,
     borderWidth: 2,
-    borderColor:'black'
+    borderColor: "black",
   },
   prevNumberStyle: {
     flex: 1,
