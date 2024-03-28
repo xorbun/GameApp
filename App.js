@@ -5,11 +5,19 @@ import { useState } from "react";
 import GameScreens from "./screens/GameScreen";
 import Colors from "./constants/colors";
 import GameOVer from "./screens/GameOver";
-
+import { useFonts } from "expo-font";
+import AppLoading from "expo-app-loading";
 export default function App() {
   const [useNumber, setUseNumber] = useState();
   const [gameIsOver, setGameIsOVer] = useState(false);
 
+  const [fontsLoaded] = useFonts({
+    'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
+    'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
+  });
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
   const startGameHandler = (pickedNumber) => {
     setUseNumber(pickedNumber);
     setGameIsOVer(false);

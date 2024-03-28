@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import NumberContainer from "../components/numberContainer";
 import PrimaryButton from "../components/PrimaryButton";
 import GameText from "../components/Text";
-import Colors from "../constants/colors";
+import { AntDesign } from '@expo/vector-icons';
+import Card from "../components/Card";
 const GameScreens = ({ chosenNumber, onGameOver }) => {
   function generateRandomBetween(min, max, exclude) {
     const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -57,23 +58,23 @@ const GameScreens = ({ chosenNumber, onGameOver }) => {
   return (
     <View style={styles.container}>
       <Title>Provo a indovinare...</Title>
-      <View style={styles.box}>
+      <Card>
       <GameText>Il numero scelto è</GameText>
       <NumberContainer>{currentGuess}</NumberContainer>
 
       <View style={styles.buttonsContainer}>
         <View style={styles.buttonContainer}>
           <PrimaryButton onPress={nextGuessedNumber.bind(this, "lower")}>
-            -
+          <AntDesign name="minuscircleo" size={24} color="white" />
           </PrimaryButton>
         </View>
         <View style={styles.buttonContainer}>
           <PrimaryButton onPress={nextGuessedNumber.bind(this, "bigger")}>
-            +
+          <AntDesign name="pluscircleo" size={24} color="white" />
           </PrimaryButton>
         </View>
       </View>
-      </View>
+      </Card>
     </View>
   );
 };
@@ -84,14 +85,7 @@ const styles = StyleSheet.create({
     padding: 24,
     
   },
-  box:{
-    margin:12,
-    borderWidth:1,
-    paddingHorizontal:74,
-    paddingVertical:35,
-    backgroundColor:Colors.primary800,
-    borderRadius:16
-  },
+ 
   buttonsContainer: {
     flexDirection: "row",
   },
