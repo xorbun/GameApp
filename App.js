@@ -25,14 +25,17 @@ export default function App() {
     setUseNumber(pickedNumber);
     setGameIsOVer(false);
   };
-
+  const startNewGameHandler=()=>{
+    setUseNumber(null),
+    setGameIsOVer(false)
+  }
   let screen;
   const gameOverHandler = (numberOfTry) => {
     setNumberOfTry(numberOfTry)
     setGameIsOVer(true);
   };
   if (gameIsOver) {
-    screen = <GameOVer victoryNum={useNumber} numberOfTry={numberofTry}/>;
+    screen = <GameOVer victoryNum={useNumber} numberOfTry={numberofTry} newGame={startNewGameHandler}/>;
   } else if (useNumber) {
     screen = (
       <GameScreens chosenNumber={useNumber} onGameOver={gameOverHandler} />
@@ -56,7 +59,6 @@ export default function App() {
     </LinearGradient>
   );
 }
-
 const styles = StyleSheet.create({
   rootScreen: {
     flex: 1,

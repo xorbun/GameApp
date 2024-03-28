@@ -1,15 +1,16 @@
-import { View, StyleSheet, Text, Alert } from "react-native";
+import { View, StyleSheet, Text, Alert, FlatList } from "react-native";
 import Title from "../components/Title";
 import { useEffect, useState } from "react";
 import NumberContainer from "../components/numberContainer";
 import PrimaryButton from "../components/PrimaryButton";
 import GameText from "../components/Text";
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign } from "@expo/vector-icons";
 import Card from "../components/Card";
-
+import Colors from "../constants/colors";
 
 const GameScreens = ({ chosenNumber, onGameOver }) => {
-  const [buttonSmash,setButtonSmash]=useState(0);
+  const [buttonSmash, setButtonSmash] = useState(0);
+
   function generateRandomBetween(min, max, exclude) {
     const rndNum = Math.floor(Math.random() * (max - min)) + min;
 
@@ -22,12 +23,11 @@ const GameScreens = ({ chosenNumber, onGameOver }) => {
 
   let minNumber = 1;
   let maxNumber = 100;
-  const initialGuess = generateRandomBetween(
-    1,
-    100,
-    chosenNumber
-  );
+  const initialGuess = generateRandomBetween(1, 100, chosenNumber);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
+  const [guessedRounds, setGuessedRounds] = useState([
+    { number: currentGuess, id: Math.random().toString() },
+  ]);
   const nextGuessedNumber = (direction) => {
     if (
       (direction === "lower" && currentGuess < chosenNumber) ||
@@ -49,13 +49,15 @@ const GameScreens = ({ chosenNumber, onGameOver }) => {
       currentGuess
     );
     setCurrentGuess(newRndmNum);
-    setButtonSmash(buttonSmash+1)
+    setGuessedRounds((prevGuessedRounds) => [
+      ...prevGuessedRounds,
+      { number: currentGuess, id: Math.random().toString() },
+    ]);
+    setButtonSmash(buttonSmash + 1);
   };
   useEffect(() => {
-    
     if (currentGuess === chosenNumber) {
-       
-        onGameOver(buttonSmash);
+      onGameOver(buttonSmash);
     }
   }, [currentGuess, chosenNumber, onGameOver]);
 
@@ -63,22 +65,39 @@ const GameScreens = ({ chosenNumber, onGameOver }) => {
     <View style={styles.container}>
       <Title>Provo a indovinare...</Title>
       <Card>
-      <GameText>Il numero scelto è</GameText>
-      <NumberContainer>{currentGuess}</NumberContainer>
+        <GameText>Il numero scelto è</GameText>
+        <NumberContainer>{currentGuess}</NumberContainer>
 
-      <View style={styles.buttonsContainer}>
-        <View style={styles.buttonContainer}>
-          <PrimaryButton onPress={nextGuessedNumber.bind(this, "lower")}>
-          <AntDesign name="minuscircleo" size={24} color="white" />
-          </PrimaryButton>
+        <View style={styles.buttonsContainer}>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessedNumber.bind(this, "lower")}>
+              <AntDesign name="minuscircleo" size={24} color="white" />
+            </PrimaryButton>
+          </View>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessedNumber.bind(this, "bigger")}>
+              <AntDesign name="pluscircleo" size={24} color="white" />
+            </PrimaryButton>
+          </View>
         </View>
-        <View style={styles.buttonContainer}>
-          <PrimaryButton onPress={nextGuessedNumber.bind(this, "bigger")}>
-          <AntDesign name="pluscircleo" size={24} color="white" />
-          </PrimaryButton>
-        </View>
-      </View>
       </Card>
+      <View style={styles.prevNumberContainer}>
+        <Title style={styles.prevNumberTitles}>i numeri precedenti...</Title>
+
+        <FlatList
+          data={guessedRounds}
+          renderItem={(itemData) => (
+            <View style={styles.flatContainer}>
+              <GameText style={styles.prevNumberStyle} id={itemData.item.id}>
+                {itemData.item.number}
+              </GameText>
+            </View>
+          )}
+          keyExtractor={(item) => {
+            return item.id;
+          }}
+        />
+      </View>
     </View>
   );
 };
@@ -87,9 +106,31 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-    
   },
- 
+
+  prevNumberContainer: {
+    flex: 1,
+    alignItems: "center",
+    marginHorizontal: 12,
+    overflow: "hidden",
+  },
+  prevNumberTitles: {
+    borderWidth: 0,
+  },
+  flatContainer: {
+    paddingHorizontal: 110,
+    marginBottom: 12,
+    borderRadius: 40,
+    backgroundColor: Colors.accent200,
+    borderWidth: 2,
+    borderColor:'black'
+  },
+  prevNumberStyle: {
+    flex: 1,
+    textAlign: "center",
+    color: Colors.primary500,
+    fontSize: 25,
+  },
   buttonsContainer: {
     flexDirection: "row",
   },
