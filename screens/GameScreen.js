@@ -1,50 +1,64 @@
-import { View, StyleSheet,Text,Alert } from "react-native";
+import { View, StyleSheet, Text, Alert } from "react-native";
 import Title from "../components/Title";
 import { useEffect, useState } from "react";
 import NumberContainer from "../components/numberContainer";
 import PrimaryButton from "../components/PrimaryButton";
-const GameScreens = ({chosenNumber}) => {
-  const [currentGuess, setCurrentGuess] = useState(0);
-  const generateRandomNumber = (max, min, exclude) => {
-    const rndmNum = Math.floor(Math.random() * (max - min) + min);
-    if (rndmNum === exclude) {
-      return generateRandomNumber(max, min, exclude);
+
+const GameScreens = ({ chosenNumber, onGameOver }) => {
+  function generateRandomBetween(min, max, exclude) {
+    const rndNum = Math.floor(Math.random() * (max - min)) + min;
+
+    if (rndNum === exclude) {
+      return generateRandomBetween(min, max, exclude);
     } else {
-      return rndmNum;
+      return rndNum;
     }
-  };
+  }
+
   let minNumber = 1;
   let maxNumber = 100;
-  const initialGuess = generateRandomNumber(
-    minNumber,
-    maxNumber,
+  const initialGuess = generateRandomBetween(
+    1,
+    100,
     chosenNumber
   );
+  const [currentGuess, setCurrentGuess] = useState(initialGuess);
   const nextGuessedNumber = (direction) => {
-    if((direction ==='lower' && currentGuess<chosenNumber) ||(direction==='bigger'&& currentGuess>chosenNumber))
-    {
-        Alert.alert('stai mentendo!','di la verità!',[{text:'mi dispiace',style:'cancel'}])
-        return;
+    if (
+      (direction === "lower" && currentGuess < chosenNumber) ||
+      (direction === "bigger" && currentGuess > chosenNumber)
+    ) {
+      Alert.alert("stai mentendo!", "di la verità!", [
+        { text: "mi dispiace", style: "cancel" },
+      ]);
+      return;
     }
     if (direction === "lower") {
       maxNumber = currentGuess;
     } else {
       minNumber = currentGuess + 1;
     }
-    const newRndmNum = generateRandomNumber(minNumber, maxNumber, currentGuess);
+    const newRndmNum = generateRandomBetween(
+      minNumber,
+      maxNumber,
+      currentGuess
+    );
     setCurrentGuess(newRndmNum);
   };
   useEffect(() => {
-    setCurrentGuess(initialGuess);
-  }, []);
+    
+    if (currentGuess === chosenNumber) {
+       
+        onGameOver();
+    }
+  }, [currentGuess, chosenNumber, onGameOver]);
 
   return (
     <View style={styles.container}>
       <Title>il numero scelto è</Title>
       <NumberContainer>{currentGuess}</NumberContainer>
-      
+
       <View style={styles.buttonsContainer}>
-        
         <View style={styles.buttonContainer}>
           <PrimaryButton onPress={nextGuessedNumber.bind(this, "lower")}>
             -
