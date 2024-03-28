@@ -2,7 +2,8 @@ import { Alert, StyleSheet, TextInput, View } from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
 import { useState } from "react";
 import Colors from "../constants/colors";
-
+import Title from "../components/Title";
+import GameText from "../components/Text";
 const StartGameScreen = ({onPicked}) => {
   const [inputNumber, setInputNumber] = useState();
 
@@ -12,6 +13,7 @@ const StartGameScreen = ({onPicked}) => {
   const resetHandler = () => {
     setInputNumber("");
   };
+
   const confirmHandler = () => {
     const number = parseInt(inputNumber);
     if (isNaN(number) || number < 0 || number > 99) {
@@ -27,7 +29,12 @@ const StartGameScreen = ({onPicked}) => {
   };
 
   return (
+    <View>
+      <View style={styles.rootContainer}>
+    <Title>Indovina il numero!</Title>
+    </View>
     <View style={styles.inputContainer}>
+      <GameText>scegli un numero</GameText>
       <TextInput
         style={styles.textInput}
         maxLength={2}
@@ -45,16 +52,23 @@ const StartGameScreen = ({onPicked}) => {
           <PrimaryButton onPress={confirmHandler}>conferma</PrimaryButton>
         </View>
       </View>
+      
+    </View>
     </View>
   );
 };
 export default StartGameScreen;
 
 const styles = StyleSheet.create({
+  rootContainer:{
+      alignItems:'center',
+      marginTop:50,
+      
+  },
   inputContainer: {
     marginHorizontal: 24,
     padding: 30,
-    marginTop: 100,
+    marginTop: 50,
     backgroundColor: Colors.primary800,
     borderRadius: 8,
     elevation: 4, //ombre solo su android

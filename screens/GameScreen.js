@@ -3,7 +3,8 @@ import Title from "../components/Title";
 import { useEffect, useState } from "react";
 import NumberContainer from "../components/numberContainer";
 import PrimaryButton from "../components/PrimaryButton";
-
+import GameText from "../components/Text";
+import Colors from "../constants/colors";
 const GameScreens = ({ chosenNumber, onGameOver }) => {
   function generateRandomBetween(min, max, exclude) {
     const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -55,7 +56,9 @@ const GameScreens = ({ chosenNumber, onGameOver }) => {
 
   return (
     <View style={styles.container}>
-      <Title>il numero scelto è</Title>
+      <Title>Provo a indovinare...</Title>
+      <View style={styles.box}>
+      <GameText>Il numero scelto è</GameText>
       <NumberContainer>{currentGuess}</NumberContainer>
 
       <View style={styles.buttonsContainer}>
@@ -70,6 +73,7 @@ const GameScreens = ({ chosenNumber, onGameOver }) => {
           </PrimaryButton>
         </View>
       </View>
+      </View>
     </View>
   );
 };
@@ -78,6 +82,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
+    
+  },
+  box:{
+    margin:12,
+    borderWidth:1,
+    paddingHorizontal:74,
+    paddingVertical:35,
+    backgroundColor:Colors.primary800,
+    borderRadius:16
   },
   buttonsContainer: {
     flexDirection: "row",
