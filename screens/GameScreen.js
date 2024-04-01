@@ -1,4 +1,12 @@
-import { View, StyleSheet, Text, Alert, FlatList } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Alert,
+  FlatList,
+  Dimensions,
+  useWindowDimensions,
+} from "react-native";
 import Title from "../components/Title";
 import { useEffect, useState } from "react";
 import NumberContainer from "../components/numberContainer";
@@ -10,7 +18,7 @@ import Colors from "../constants/colors";
 
 const GameScreens = ({ chosenNumber, onGameOver }) => {
   const [buttonSmash, setButtonSmash] = useState(0);
-
+  const { width, height } = useWindowDimensions();
   function generateRandomBetween(min, max, exclude) {
     const rndNum = Math.floor(Math.random() * (max - min)) + min;
 
@@ -60,10 +68,8 @@ const GameScreens = ({ chosenNumber, onGameOver }) => {
       onGameOver(buttonSmash);
     }
   }, [currentGuess, chosenNumber, onGameOver]);
-
-  return (
-    <View style={styles.container}>
-      <Title>Provo a indovinare...</Title>
+  let content = (
+    <>
       <GameText>Il numero scelto è</GameText>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card>
@@ -80,34 +86,62 @@ const GameScreens = ({ chosenNumber, onGameOver }) => {
           </View>
         </View>
       </Card>
-      <View style={styles.prevNumberContainer}>
-        <Title style={styles.prevNumberTitles}>i numeri precedenti...</Title>
+    </>
+  );
+  if (width > 600) {
+    content = (
+      <>
+        <View style={styles.landscapeContainer}>
+          <PrimaryButton onPress={nextGuessedNumber.bind(this, "lower")}>
+            <AntDesign name="minuscircleo" size={24} color="white" />
+          </PrimaryButton>
+          <NumberContainer>{currentGuess}</NumberContainer>
 
-        <FlatList
-          data={guessedRounds}
-          renderItem={(itemData) => (
-            <View style={styles.flatContainer}>
-              <GameText style={styles.prevNumberStyle} id={itemData.item.id}>
-                {itemData.item.number}
-              </GameText>
-            </View>
-          )}
-          keyExtractor={(item) => {
-            return item.id;
-          }}
-        />
+          <PrimaryButton onPress={nextGuessedNumber.bind(this, "bigger")}>
+            <AntDesign name="pluscircleo" size={24} color="white" />
+          </PrimaryButton>
+        </View>
+      </>
+    );
+  }
+  return (
+    <ScrollView>
+      <View style={styles.container}>
+        <Title>Provo a indovinare...</Title>
+
+        <View style={styles.prevNumberContainer}>
+          <Title style={styles.prevNumberTitles}>i numeri precedenti...</Title>
+          {content}
+          <FlatList
+            data={guessedRounds}
+            renderItem={(itemData) => (
+              <View style={styles.flatContainer}>
+                <GameText style={styles.prevNumberStyle} id={itemData.item.id}>
+                  {itemData.item.number}
+                </GameText>
+              </View>
+            )}
+            keyExtractor={(item) => {
+              return item.id;
+            }}
+          />
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 export default GameScreens;
+const deviceWidth = Dimensions.get("window").width;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
     alignItems: "center",
   },
-
+  landscapeContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
   prevNumberContainer: {
     flex: 1,
     alignItems: "center",
@@ -119,6 +153,7 @@ const styles = StyleSheet.create({
   },
   flatContainer: {
     paddingHorizontal: 110,
+    marginTop: 12,
     marginBottom: 12,
     borderRadius: 40,
     backgroundColor: Colors.accent200,
